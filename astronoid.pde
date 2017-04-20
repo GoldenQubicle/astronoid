@@ -14,19 +14,28 @@ class magnet
  */
 Ship ship;
 Astroid astroid;
+ArrayList<Astroid> astroids = new ArrayList<Astroid>();
+
 
 void setup() {
-  size(512, 512);  
+  size(680, 680);  
   ship = new Ship();
-  astroid = new Astroid();
+  for (int i = 0; i < 25; i++) {
+    astroid = new Astroid();
+    astroids.add(astroid);
+  }
 }
 
 void draw() {  
   background(255);
   ship.display();
-  ship.update();
-  astroid.display();
-  astroid.update();
+
+  for (Astroid myAstroid : astroids) {
+    myAstroid.display();  
+    myAstroid.edges();
+    PVector field = myAstroid.attract(ship);
+    ship.update(field);
+  }
 }
 
 

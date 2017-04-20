@@ -5,10 +5,10 @@ class Ship {
 
   Ship() {
     xy = new PVector(width/2, height/2);
-    velocity = new PVector(0, 0);
-    acceleration = new PVector(0, 0);
+    velocity = new PVector();
+    acceleration = new PVector();
     charge = 0;
-    temp = color(0, 255, 0);
+    temp = color(255, 0, 0);
   }
 
   void display() {
@@ -17,19 +17,22 @@ class Ship {
     rect(xy.x, xy.y, 20, 10);
   }
 
-  void update() {
-    if (charge == 1) {
-      acceleration = PVector.sub(astroid.xy, xy);
+  void update(PVector field) {
+    if (charge == 1) {   
+      acceleration.add(field);
+      velocity.add(acceleration);
+      //acceleration.setMag(200);
     }
-    if (charge == 2) {
-      acceleration = PVector.add(astroid.xy, xy);
-    }
-    acceleration.setMag(0.1);    
 
-    velocity.add(acceleration);
-    velocity.limit(2);
-    xy.add(velocity);
+
     
+    velocity.limit(.1);
+    xy.add(velocity);
+    acceleration.mult(0);
+
+
+
+
     if (xy.x < 0) {      
       xy.x = width;
     }
@@ -45,17 +48,14 @@ class Ship {
   }
 
   void keyPressed() {
-    if (key == 's') {
-      charge = 0;
-      temp = color(0, 255, 0);
-    }
-    if (key == 'a') {
-      charge = 1;
-      temp = color(0, 0, 255);
-    }
-    if (key == 'd') {
-      charge = 2;
-      temp = color(255, 0, 0);
+    if (key == 'w') {
+      if (charge == 0) {
+        charge = 1;
+        temp = color(0, 255, 0);
+      } else {
+        charge = 0;
+        temp = color(255, 0, 0);
+      }
     }
   }
 }
